@@ -30,8 +30,8 @@ const signUp = async (req, res) => {
     const user = await User.create(userData);
     
     req.session.user = {
-        username: userInDatabase.username,
-        id: userInDatabase.id,
+        username: user.username,
+        id: user.id,
     }
 
     req.session.save(() => {
