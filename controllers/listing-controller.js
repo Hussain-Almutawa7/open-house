@@ -35,7 +35,7 @@ let listListing = async (req, res) => {
 }
 
 let listingDetails = async (req, res) => {
-    let list = Listing.findById(req.params.Id);
+    let list =await  Listing.findById(req.params.Id).populate("owner");
 
     res.render("listings/show.ejs", {list});
 }
