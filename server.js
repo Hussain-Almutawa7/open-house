@@ -53,7 +53,8 @@ app.delete("/auth/sign-out", authCtrl.signOut);
 
 // LISTING ROUTER
 app.get("/listings/new", isSignedIn, listingCtrl.showNewForm);
-app.post("/listings", listingCtrl.createList)
+app.post("/listings", listingCtrl.createList);
+app.get("/listings", listingCtrl.listListing);
 
 app.get("/dashboard", isSignedIn, async (req, res) => {
     res.render("dashboard.ejs");

@@ -8,7 +8,7 @@ const listingSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        default: "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"
+        default: "https://images.pexels.com/photos/1438832/pexels-photo-1438832.jpeg"
     },
     streetAddress: {
         type: String,
@@ -25,7 +25,8 @@ const listingSchema = new mongoose.Schema({
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: true
     },
 }, {
     timestamps: true

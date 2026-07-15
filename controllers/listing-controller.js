@@ -18,17 +18,24 @@ const createList = async (req, res) => {
         owner: req.session.user.id
     }
 
-    if(req.body.image) {
-         listData.image = req.body.image;
+    if (req.body.image) {
+        listData.image = req.body.image;
     }
 
     // listData.owner = req.body.owner,
 
     let createdList = await Listing.create(listData);
-    res.redirect("/")
+    res.redirect("/listings")
+}
+
+let listListing = async (req, res) => {
+    let allList = await Listing.find().populate("owner");
+
+    res.render("listings/index.ejs", { allList });
 }
 
 module.exports = {
     showNewForm,
     createList,
+    listListing
 }
