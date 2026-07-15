@@ -2,14 +2,17 @@
 
 <h1>Details Page</h1>
 
-<h2><%= list.price %></h2>
-<h2><%= list.streetAddress %></h2>
-<h2><%= list.city %></h2>
-<h2><%= list.size %></h2>
+<h2>Price: <%= list.price %></h2>
+<h2>Address: <%= list.streetAddress %></h2>
+<h2>City: <%= list.city %></h2>
+<h2>Size: <%= list.size %></h2>
 <img src="<%= list.image %>" alt="image" width="200">
 <br>
+<% if(list.owner._id.equals(user.id)) { %>
+You Own this
+<% } else { %>
+<% } %>
 <span>A listing in <%= list.city %> owned by: <%= list.owner.username %></span>
-
 </body>
 
 </html>
