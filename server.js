@@ -17,7 +17,7 @@ const path = require("path");
 
 const app = express();
 
-const PORT = process.env.PORT || 3000; // For me, this is best practice. Usually, the port is placed in .env; if not, 3000 will be used
+const PORT = process.env.PORT || 3000;
 
 // Set ejs by default example: res.render("home") inseatd of res.render("home.ejs")
 // Delete it if you find it confusing; nothing will be changed
@@ -41,12 +41,19 @@ app.use(
 
 app.get("/", authCtrl.home);
 
-// Add authentication routes later, for example:
-// app.get("/auth/sign-up", authCtrl.showSignUpForm);
-// app.post("/auth/sign-up", authCtrl.signUp);
-// app.get("/auth/sign-in", authCtrl.showSignInForm);
-// app.post("/auth/sign-in", authCtrl.signIn);
-// app.delete("/auth/sign-out", authCtrl.signOut);
+app.get("/auth/sign-up", authCtrl.showSignUpForm);
+app.post("/auth/sign-up", authCtrl.signUp);
+app.get("/auth/sign-in", authCtrl.showSignInForm);
+app.post("/auth/sign-in", authCtrl.signIn);
+app.delete("/auth/sign-out", authCtrl.signOut);
+
+app.get("/dashboard", async (req, res) => {
+    if (!req.session.user) return res.redirect("/auth/sign-in")
+    res.render("dashboard.ejs", {
+        user: req.session.user
+    })
+});
+
 
 const startServer = async () => {
     try {
