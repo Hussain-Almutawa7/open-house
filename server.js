@@ -9,6 +9,10 @@ require("dotenv").config();
 const authCtrl = require("./controllers/auth.js");
 const listingCtrl = require("./controllers/listing-controller.js")
 
+// Custom MiddleWare
+const isSignedIn = require("./middleware/is-signed-in.js")
+const passUserToView = require("./middleware/pass-user-to-view.js")
+
 const methodOverride = require("method-override");
 const { MongoStore } = require("connect-mongo");
 const session = require("express-session");
@@ -37,6 +41,8 @@ app.use(
     })
 );
 
+app.use(passUserToView)
+
 // AUTH ROUTERS
 app.get("/", authCtrl.home);
 app.get("/auth/sign-up", authCtrl.showSignUpForm);
@@ -46,13 +52,11 @@ app.post("/auth/sign-in", authCtrl.signIn);
 app.delete("/auth/sign-out", authCtrl.signOut);
 
 // LISTING ROUTER
-app.get("/listings/new", listingCtrl.showNewForm);
+app.get("/listings/new", isSignedIn, listingCtrl.showNewForm);
+app.post("/listings", listingCtrl.createList)
 
-app.get("/dashboard", async (req, res) => {
-    if (!req.session.user) return res.redirect("/auth/sign-in")
-    res.render("dashboard.ejs", {
-        user: req.session.user
-    })
+app.get("/dashboard", isSignedIn, async (req, res) => {
+    res.render("dashboard.ejs");
 });
 
 
