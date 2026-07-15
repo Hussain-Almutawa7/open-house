@@ -7,8 +7,25 @@ const showNewForm = (req, res) => {
 }
 
 const createList = async (req, res) => {
-    console.log(req.session);
-    res.send(req.body);
+    // console.log(req.session);
+    // res.send(req.body);
+
+    const listData = {
+        price: req.body.price,
+        streetAddress: req.body.streetAddress,
+        city: req.body.city,
+        size: req.body.size,
+        owner: req.session.user.id
+    }
+
+    if(req.body.image) {
+         listData.image = req.body.image;
+    }
+
+    // listData.owner = req.body.owner,
+
+    let createdList = await Listing.create(listData);
+    res.redirect("/")
 }
 
 module.exports = {
