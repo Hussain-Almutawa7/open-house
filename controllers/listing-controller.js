@@ -34,8 +34,15 @@ let listListing = async (req, res) => {
     res.render("listings/index.ejs", { allList });
 }
 
+let listingDetails = async (req, res) => {
+    let list = Listing.findById(req.params.Id);
+
+    res.render("listings/show.ejs", {list});
+}
+
 module.exports = {
     showNewForm,
     createList,
-    listListing
+    listListing,
+    listingDetails,
 }
