@@ -16,6 +16,7 @@ const passUserToView = require("./middleware/pass-user-to-view.js");
 
 const methodOverride = require("method-override");
 const { MongoStore } = require("connect-mongo");
+const upload = require("./config/multer");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -54,7 +55,7 @@ app.delete("/auth/sign-out", authCtrl.signOut);
 
 // LISTING ROUTER
 app.get("/listings/new", isSignedIn, listingCtrl.showNewForm);
-app.post("/listings", listingCtrl.createList);
+app.post("/listings", isSignedIn, upload.single("image"), listingCtrl.createList);
 app.get("/listings", listingCtrl.listListing);
 app.get("/listings/:Id", isSignedIn, listingCtrl.listingDetails)
 app.delete("/listings/:Id", isSignedIn, listingCtrl.deleteListing)

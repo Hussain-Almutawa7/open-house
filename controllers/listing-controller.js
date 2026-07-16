@@ -1,4 +1,26 @@
 const Listing = require("../models/listing");
+const cloudinary = require("../config/cloudinary");
+
+const uploadImage = (fileBuffer) => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                folder: 'open-house/listings',
+                resource_type: 'image',
+            },
+            (error, result) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve(result)
+                }
+            }
+        )
+
+        uploadStream.end(fileBuffer)
+    })
+}
+
 
 const showNewForm = (req, res) => {
     res.render("listings/new.ejs", {
@@ -10,12 +32,24 @@ const createList = async (req, res) => {
     // console.log(req.session);
     // res.send(req.body);
 
+    if(!req.file) {
+        res.render("error.ejs", {
+            msg: "Please select an image"
+        });
+    }
+
+    const uploadedImage = await uploadImage(req.file.buffer);
+
     const listData = {
         price: req.body.price,
         streetAddress: req.body.streetAddress,
         city: req.body.city,
         size: req.body.size,
-        owner: req.session.user.id
+        owner: req.session.user.id,
+        image: {
+            url: uploadedImage.secure_url,
+            publicId: uploadedImage.public_id
+        }
     }
 
     if (req.body.image) {
@@ -41,9 +75,9 @@ const listingDetails = async (req, res) => {
         return user.equals(req.session.user.id)
     });
 
-    res.render("listings/show.ejs", { 
-        list, 
-        userHasFavorited 
+    res.render("listings/show.ejs", {
+        list,
+        userHasFavorited
     });
 }
 

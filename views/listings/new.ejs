@@ -1,7 +1,7 @@
 <%- include("../partials/nav") %>
     <main>
         <h1>New Listing</h1>
-        <form action="/listings" method="POST" >
+        <form action="/listings" method="POST" enctype="multipart/form-data">
             Price:
             <input type="number" name="price" min="0">
 
@@ -15,7 +15,7 @@
             <input type="number" name="size" min="0">
 
             Image:
-            <input type="text" name="image">
+            <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
 
             <button type="submit">Add Listing</button>
         </form>

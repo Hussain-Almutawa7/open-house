@@ -4,7 +4,7 @@
     
     <% allList.forEach(list => { %>
         <a href="/listings/<%= list.id %>">
-            <img src="<%= list.image %>" alt="image" width="200"> <br>
+            <img src="<%= list.image.url %>" alt="image" width="200"> <br>
             <span>A listing in <%= list.city %> owned by: <%= list.owner.username %></span>
         </a>
         <hr>
