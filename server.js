@@ -7,11 +7,12 @@ dns.setServers(["8.8.8.8", "1.1.1.1"]);
 require("dotenv").config();
 
 const authCtrl = require("./controllers/auth.js");
-const listingCtrl = require("./controllers/listing-controller.js")
+const listingCtrl = require("./controllers/listing-controller.js");
+const questionsCtrl = require("./controllers/questions.js");
 
 // Custom MiddleWare
-const isSignedIn = require("./middleware/is-signed-in.js")
-const passUserToView = require("./middleware/pass-user-to-view.js")
+const isSignedIn = require("./middleware/is-signed-in.js");
+const passUserToView = require("./middleware/pass-user-to-view.js");
 
 const methodOverride = require("method-override");
 const { MongoStore } = require("connect-mongo");
@@ -57,9 +58,13 @@ app.post("/listings", listingCtrl.createList);
 app.get("/listings", listingCtrl.listListing);
 app.get("/listings/:Id", isSignedIn, listingCtrl.listingDetails)
 app.delete("/listings/:Id", isSignedIn, listingCtrl.deleteListing)
-
 app.get("/listings/:Id/edit", isSignedIn, listingCtrl.showEditListing)
 app.put("/listings/:Id", isSignedIn, listingCtrl.editListing)
+app.post("/listings/:listingId/favorited-by/:userId", isSignedIn, listingCtrl.favorite)
+app.delete("/listings/:listingId/favorited-by/:userId", isSignedIn, listingCtrl.unfavorite)
+
+// QUESTIONS ROUTERS
+app.post("/listings/:Id/questions", questionsCtrl.create);
 
 app.get("/dashboard", isSignedIn, async (req, res) => {
     res.render("dashboard.ejs");

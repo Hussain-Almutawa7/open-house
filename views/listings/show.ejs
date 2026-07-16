@@ -21,6 +21,39 @@
         <% } else { %>
         <p>You don't own this <%= list.owner.username %> does</p>
         <% } %>
+
+        <section>
+            <h2>Favorites</h2>
+            <% if(list.favoritedByUsers.length === 0 ) { %>
+                <p>No one favorited this yet.</p>
+            <% } else if (list.favoritedByUsers.length === 1 ) { %>
+                <p>Favorited by <%= list.favoritedByUsers.length %> person</p>
+            <%  } else { %>
+                <p>Favorited by <%= list.favoritedByUsers.length %> people</p>
+            <%  } %>
+            <% if(userHasFavorited) { %>
+                <form action="/listings/<%= list.id %>/favorited-by/<%= user.id %>?_method=DELETE" method="POST">
+                    <button type="submit">❌</button>
+                </form>
+                <% } else { %>
+                    <form action="/listings/<%= list.id %>/favorited-by/<%= user.id %>" method="POST">
+                    <button type="submit">💖</button>
+                </form>
+               <%  } %>
+        </section>
+
+        <section>
+            <h2>Questions about this property?</h2>
+            <form action="/listings/<%= list.id %>/questions" method="POST">
+                <textarea name="text" id="" rows="4" required></textarea>
+                <button type="submit">Ask Question</button>
+            </form>
+
+            <h3>Question from users</h3>
+            <% list.questions.forEach(question => { %>
+                <p><%= question.author.username %>: <%= question.text %></p>
+            <% }) %>
+        </section>
     </main>
 </body>
 

@@ -29,15 +29,22 @@ const createList = async (req, res) => {
 }
 
 const listListing = async (req, res) => {
-    let allList = await Listing.find().populate("owner");
+    let allList = await Listing.find().populate("owner")
 
     res.render("listings/index.ejs", { allList });
 }
 
 const listingDetails = async (req, res) => {
-    let list = await Listing.findById(req.params.Id).populate("owner");
+    let list = await Listing.findById(req.params.Id).populate("owner").populate("questions.author");
 
-    res.render("listings/show.ejs", { list });
+    const userHasFavorited = list.favoritedByUsers.some(user => {
+        return user.equals(req.session.user.id)
+    });
+
+    res.render("listings/show.ejs", { 
+        list, 
+        userHasFavorited 
+    });
 }
 
 const deleteListing = async (req, res) => {
@@ -63,9 +70,25 @@ const showEditListing = async (req, res) => {
 }
 
 const editListing = async (req, res) => {
-   //You can add an object and pass it instead of req.body
+    //You can add an object and pass it instead of req.body
     await Listing.findByIdAndUpdate(req.params.Id, req.body)
     res.redirect(`/listings/${req.params.Id}`)
+}
+
+const favorite = async (req, res) => {
+    await Listing.findByIdAndUpdate(req.params.listingId, {
+        $push: { favoritedByUsers: req.params.userId }
+    });
+
+    res.redirect(`/listings/${req.params.listingId}`)
+}
+
+const unfavorite = async (req, res) => {
+    await Listing.findByIdAndUpdate(req.params.listingId, {
+        $pull: { favoritedByUsers: req.params.userId }
+    });
+
+    res.redirect(`/listings/${req.params.listingId}`)
 }
 
 module.exports = {
@@ -76,4 +99,6 @@ module.exports = {
     deleteListing,
     showEditListing,
     editListing,
+    favorite,
+    unfavorite,
 }

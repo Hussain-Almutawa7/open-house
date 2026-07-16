@@ -42,6 +42,11 @@ const listingSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
+    questions: [quetionSchema],
+    favoritedByUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }],
 }, {
     timestamps: true
 });
