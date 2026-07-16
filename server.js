@@ -56,9 +56,19 @@ app.get("/listings/new", isSignedIn, listingCtrl.showNewForm);
 app.post("/listings", listingCtrl.createList);
 app.get("/listings", listingCtrl.listListing);
 app.get("/listings/:Id", isSignedIn, listingCtrl.listingDetails)
+app.delete("/listings/:Id", isSignedIn, listingCtrl.deleteListing)
+
+app.get("/listings/:Id/edit", isSignedIn, listingCtrl.showEditListing)
+app.put("/listings/:Id", isSignedIn, listingCtrl.editListing)
 
 app.get("/dashboard", isSignedIn, async (req, res) => {
     res.render("dashboard.ejs");
+});
+
+app.get("/*splat", (req, res) => {
+    res.render("erroe.ejs", {
+        msg: 404
+    });
 });
 
 

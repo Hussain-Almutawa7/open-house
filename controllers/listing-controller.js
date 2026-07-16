@@ -28,16 +28,43 @@ const createList = async (req, res) => {
     res.redirect("/listings")
 }
 
-let listListing = async (req, res) => {
+const listListing = async (req, res) => {
     let allList = await Listing.find().populate("owner");
 
     res.render("listings/index.ejs", { allList });
 }
 
-let listingDetails = async (req, res) => {
-    let list =await  Listing.findById(req.params.Id).populate("owner");
+const listingDetails = async (req, res) => {
+    let list = await Listing.findById(req.params.Id).populate("owner");
 
-    res.render("listings/show.ejs", {list});
+    res.render("listings/show.ejs", { list });
+}
+
+const deleteListing = async (req, res) => {
+    await Listing.findByIdAndDelete(req.params.Id)
+    res.redirect("/listings")
+
+    // const list = await Listing.findById(req.params.Id)
+
+    // if (list.owner.equals(req.session.user.id)) {
+    //     await Listing.findByIdAndDelete(req.params.Id)
+    //     res.redirect("/listings")
+    // } else {
+    //     res.render("error.ejs", {
+    //         msg: "You don't have permission to do that"
+    //     });
+    // }
+}
+
+const showEditListing = async (req, res) => {
+    const list = await Listing.findById(req.params.Id)
+
+    res.render("listings/edit.ejs", { list })
+}
+
+const editListing = async (req, res) => {
+    await Listing.findByIdAndUpdate(req.params.Id, req.body)
+    res.redirect(`/listings/${req.params.Id}`)
 }
 
 module.exports = {
@@ -45,4 +72,7 @@ module.exports = {
     createList,
     listListing,
     listingDetails,
+    deleteListing,
+    showEditListing,
+    editListing,
 }
