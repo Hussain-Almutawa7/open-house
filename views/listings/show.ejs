@@ -11,15 +11,15 @@
 <% if(list.owner._id.equals(user.id)) { %>
 <p>You Own this</p>
 <form action="/listings/<%= list.id %>?_method=DELETE" method="POST">
-    <button type="submit">Delete this Listing</button>
+  <button type="submit">Delete this Listing</button>
 </form>
-<button>
-    <a href="/listings/<%= list.id %>/edit">Edit Listing</a>
-</button>
+<div class="container">
+    <a class="a-btn" href="/listings/<%= list.id %>/edit">Edit Listing</a>
+</div>
+<p>A listing in <%= list.city %> owned by: <%= list.owner.username %></p>
 <% } else { %>
-    <p>You don't own this <%= list.owner.username %> does</p>
+<p>You don't own this <%= list.owner.username %> does</p>
 <% } %>
-<span>A listing in <%= list.city %> owned by: <%= list.owner.username %></span>
 </body>
 
 </html>
