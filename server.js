@@ -60,7 +60,7 @@ app.get("/listings", listingCtrl.listListing);
 app.get("/listings/:Id", isSignedIn, listingCtrl.listingDetails)
 app.delete("/listings/:Id", isSignedIn, listingCtrl.deleteListing)
 app.get("/listings/:Id/edit", isSignedIn, listingCtrl.showEditListing)
-app.put("/listings/:Id", isSignedIn, listingCtrl.editListing)
+app.put("/listings/:Id", isSignedIn, upload.single("image"), listingCtrl.editListing)
 app.post("/listings/:listingId/favorited-by/:userId", isSignedIn, listingCtrl.favorite)
 app.delete("/listings/:listingId/favorited-by/:userId", isSignedIn, listingCtrl.unfavorite)
 

@@ -32,7 +32,7 @@ const createList = async (req, res) => {
     // console.log(req.session);
     // res.send(req.body);
 
-    if(!req.file) {
+    if (!req.file) {
         res.render("error.ejs", {
             msg: "Please select an image"
         });
@@ -104,7 +104,15 @@ const showEditListing = async (req, res) => {
 }
 
 const editListing = async (req, res) => {
-    //You can add an object and pass it instead of req.body
+
+    if (req.file) {
+        let uploadedImage = await uploadImage(req.file.buffer);
+        req.body.image = {
+            url: uploadedImage.secure_url,
+            publicId: uploadedImage.public_id
+        }
+    }
+
     await Listing.findByIdAndUpdate(req.params.Id, req.body)
     res.redirect(`/listings/${req.params.Id}`)
 }

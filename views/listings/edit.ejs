@@ -1,7 +1,7 @@
 <%- include("../partials/nav") %>
     <main>
         <h1>New Listing</h1>
-        <form action="/listings/<%= list.id %>?_method=PUT" method="POST" >
+        <form action="/listings/<%= list.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
             Price:
             <input type="number" name="price" min="0" value="<%= list.price %>">
 
@@ -15,7 +15,7 @@
             <input type="number" name="size" min="0" value="<%= list.size %>">
 
             Image:
-            <input type="text" name="image" value="<%= list.image %>">
+            <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
 
             <button type="submit">Edit Listing</button>
         </form>
