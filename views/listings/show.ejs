@@ -1,25 +1,27 @@
 <%- include("../partials/nav") %>
 
-<h1>Details Page</h1>
+    <main>
+        <h1>Details Page</h1>
 
-<h2>Price: <%= list.price %></h2>
-<h2>Address: <%= list.streetAddress %></h2>
-<h2>City: <%= list.city %></h2>
-<h2>Size: <%= list.size %></h2>
-<img src="<%= list.image %>" alt="image" width="200">
-<br>
-<% if(list.owner._id.equals(user.id)) { %>
-<p>You Own this</p>
-<form action="/listings/<%= list.id %>?_method=DELETE" method="POST">
-  <button type="submit">Delete this Listing</button>
-</form>
-<div class="container">
-    <a class="a-btn" href="/listings/<%= list.id %>/edit">Edit Listing</a>
-</div>
-<p>A listing in <%= list.city %> owned by: <%= list.owner.username %></p>
-<% } else { %>
-<p>You don't own this <%= list.owner.username %> does</p>
-<% } %>
+        <h2>Price: <%= list.price %></h2>
+        <h2>Address: <%= list.streetAddress %></h2>
+        <h2>City: <%= list.city %></h2>
+        <h2>Size: <%= list.size %></h2>
+        <img src="<%= list.image %>" alt="image" width="200">
+        <br>
+        <% if(list.owner._id.equals(user.id)) { %>
+        <p>You Own this</p>
+        <form action="/listings/<%= list.id %>?_method=DELETE" method="POST">
+            <button type="submit">Delete this Listing</button>
+        </form>
+        <div class="container">
+            <a class="a-btn" href="/listings/<%= list.id %>/edit">Edit Listing</a>
+        </div>
+        <p>A listing in <%= list.city %> owned by: <%= list.owner.username %></p>
+        <% } else { %>
+        <p>You don't own this <%= list.owner.username %> does</p>
+        <% } %>
+    </main>
 </body>
 
 </html>

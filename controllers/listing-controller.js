@@ -63,6 +63,7 @@ const showEditListing = async (req, res) => {
 }
 
 const editListing = async (req, res) => {
+   //You can add an object and pass it instead of req.body
     await Listing.findByIdAndUpdate(req.params.Id, req.body)
     res.redirect(`/listings/${req.params.Id}`)
 }
